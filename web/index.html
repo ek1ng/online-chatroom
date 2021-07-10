@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+    <link rel="icon" type="image/png" href="./images/favicon.png" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="./index.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+var a_idx = 0;
+jQuery(document).ready(function($) {
+    $("body").click(function(e) {
+        var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正", "法治", "爱国", "敬业", "诚信", "友善");
+        var $i = $("<span/>").text(a[a_idx]);
+        a_idx = (a_idx + 1) % a.length;
+        var x = e.pageX,
+        y = e.pageY;
+        $i.css({
+            "z-index": 100000000,
+            "top": y - 20,
+            "left": x,
+            "position": "absolute",
+            "font-weight": "bold",
+            "color": "#00afef"
+        });
+        $("body").append($i);
+        $i.animate({
+            "top": y - 180,
+            "opacity": 0
+        },
+        1500,
+        function() {
+            $i.remove();
+        });
+    });
+});
+</script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background:
+                radial-gradient(black 15%, transparent 16%) 0 0,
+                radial-gradient(black 15%, transparent 16%) 8px 8px,
+                radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+                radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+            background-color:#282828;
+            background-size:16px 16px;
+            color: #fff;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 450px;
+            border-radius: 24px;
+            box-shadow: 0 9px 50px hsl(20deg 67% 75% / 31%);
+            padding: 40px;
+            background-image: linear-gradient(-225deg, #E3FDF5 50%, #FFE6FA 50%);
+            color: #3e403f;
+            animation: bounceInDown 1s ease-in both;
+        }
+
+        h1 {
+            font-size: 250%;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 0 rgb(255 255 255 / 80%);
+        }
+        .controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .controls + .controls {
+            margin-top: 14px;
+        }
+
+        form input {
+            height: 50px;
+            padding: 15px 36px;
+            font-size: 16px;
+            color: #5E6472;
+            outline: none;
+            border: 1px solid transparent;
+            border-radius: 5px;
+            transition: 0.2s linear;
+        }
+
+        form input:focus {
+            border-color: #03a9f4;
+            box-shadow: 0 0 4px #03a9f4;
+        }
+
+        label {
+            font-size: 16px;
+            text-align: right;
+            margin-right: 10px;
+            min-width: 70px;
+        }
+
+        form span {
+            position: relative;
+        }
+
+        form span::before,
+        form span::after {
+            content: '';
+            position: absolute;
+            color: #333;
+            top: 2px;
+            bottom: 2px;
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: inherit;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            height: 46px;
+            width: 34px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            background-color:#fff ;
+        }
+
+        form span::before {
+            left: 2px;
+            border-radius: 5px 0 0 5px;
+        }
+
+        form span::after {
+            right: 2px;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .user::before {
+            content: "\f2bd";
+        }
+
+        .password::before {
+            content: "\f084";
+        }
+
+        .password::after {
+            content: "\f06e";
+        }
+
+        button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            color: #252537;
+            min-height: 50px;
+            padding: 0 20px;
+            background: #B8F2E6;
+            border-radius: 5px;
+            outline: none;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s linear;
+            letter-spacing: 0.05em;
+            margin-top: 30px;
+            font-weight: 700;
+            font-size: 1.4rem;
+            text-shadow: 1px 1px 0 rgb(255 255 255 / 80%);
+        }
+
+        button:hover {
+            transform: translatey(3px);
+            box-shadow: 0 0 2px rgb(255 33 0 / 54%);
+            animation: buttonAnimation 0.4s ease-in-out infinite alternate;
+        }
+
+        button:focus {
+            border: 2px solid #fff;
+            box-shadow: 0 0 0 3px rgb(3 169 244 / 80%);
+        }
+
+        @keyframes buttonAnimation {
+            0% {
+                transform: translateY(3px);
+            }
+            100% {
+                transform: translateY(5px);
+            }
+        }
+
+        @keyframes bounceInDown {
+            from,
+            60%,
+            75%,
+            90%,
+            to {
+                animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+            }
+
+            0% {
+                opacity: 0;
+                transform: translate3d(0, -3000px, 0) scaleY(3);
+            }
+
+            60% {
+                opacity: 1;
+                transform: translate3d(0, 25px, 0) scaleY(0.9);
+            }
+
+            75% {
+                transform: translate3d(0, -10px, 0) scaleY(0.95);
+            }
+
+            90% {
+                transform: translate3d(0, 5px, 0) scaleY(0.985);
+            }
+
+            to {
+                transform: translate3d(0, 0, 0);
+            }
+            }
+
+    </style>
+</head>
+<body>
+    <main>
+        <h1>e宝的聊天室</h1>
+        <form id="form" action="">
+            <div class="controls">
+                <label for="name">用户名：</label>
+                <span class="user">
+                    <input type="text" id="name" name="user" required placeholder="请输入用户名" />
+                </span>
+            </div>
+            <div class="controls">
+                <label for="password">密码：</label>
+                <span class="password">
+                    <input type="password" id="password" name="password" required placeholder="请输入密码" />
+                </span>
+            </div>
+            <div class="controls">
+                <button onclick="loginVerifiction(event)">登录</button>
+            </div>
+        </form>
+    </main>
+</body>
+</html>
