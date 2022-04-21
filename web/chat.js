@@ -12,7 +12,6 @@ window.onload = function() {
     document.getElementById('my-profile').innerHTML = name;
     })
     socket.on('receiveMessage',(message)=>{
-        console.log('123321');
         textSection = document.getElementById('allMessages');
         textSection.innerHTML += 
         `<li class="media">
@@ -63,11 +62,12 @@ window.onload = function() {
 function setMessage(event) {
     event.preventDefault();
     var message = document.getElementById('message').value;  
+    console.log("message",message);
     socket.emit('sendMessage',message);
     document.getElementById('allMessages').innerHTML +=
     `<li class="media myMedia">
         <div class="media__object">
-            <img src="./images/avata-2.jpg" alt="${value.render}">
+            <img src="./images/avata-2.jpg" alt="">
         </div>
         <div class="media__body">
             <p>${message}</p>
